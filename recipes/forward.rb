@@ -27,5 +27,5 @@ if node['nodejs-deploy']['forward']['enable']
       enable true
     end
 else
-  Chef::Log.error('No install method found for npm')
+  Chef::Log.debug('Ignore forwarding host')
 end
