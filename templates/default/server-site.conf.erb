@@ -8,5 +8,5 @@ server {
        location / {
                try_files $uri $uri/ =404;
        }
-       <%= "return 301 https://$host$request_uri;" if @https_enabled %>
+       <%= "if ($http_x_forwarded_proto = \"http\") { return 301 https://$server_name$request_uri; }" if @https_enabled %>
 }
