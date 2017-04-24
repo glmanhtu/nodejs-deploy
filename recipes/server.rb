@@ -28,7 +28,8 @@ template "/etc/nginx/sites-available/#{node['nodejs-deploy']['server']['host_nam
   variables({
     server_port: node['nodejs-deploy']['server']['port'],
     server_root: node['nodejs-deploy']['server']['root'],
-    server_hostname: node['nodejs-deploy']['server']['host_name']
+    server_hostname: node['nodejs-deploy']['server']['host_name'],
+    https_enabled: node['nodejs-deploy']['server']['https']
   })
 end
 

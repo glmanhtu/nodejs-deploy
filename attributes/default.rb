@@ -3,6 +3,7 @@ default['nodejs-deploy']['dir'] = '/usr/local/nodejs-deploy'
 default['nodejs-deploy']['server']['root'] = '/usr/local/nodejs-deploy/defaul-root'
 default['nodejs-deploy']['server']['host_name'] = ''
 default['nodejs-deploy']['server']['port'] = 80
+default['nodejs-deploy']['server']['https'] = false
 default['nodejs-deploy']['profile'] = 'production'
 
 default['nodejs-deploy']['forward']['enable'] = false
