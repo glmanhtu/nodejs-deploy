@@ -23,6 +23,7 @@ directory source_dir do
   group 'ubuntu'
   mode '0755'
   action :create
+  recursive true
 end
 
 package 'Install Python' do
