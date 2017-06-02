@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe 'chef_nginx::default'
+include_recipe 'chef_nginx::source'
 
 directory node['nodejs-deploy']['server']['root'] do
   owner 'ubuntu'

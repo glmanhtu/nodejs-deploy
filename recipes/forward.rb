@@ -7,7 +7,7 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe 'chef_nginx::default'
+include_recipe 'chef_nginx::source'
 
 if node['nodejs-deploy']['forward']['enable']
     template "/etc/nginx/sites-available/#{node['nodejs-deploy']['forward']['from']['host']}.forward.conf" do
