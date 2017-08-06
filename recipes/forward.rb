@@ -7,14 +7,12 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe 'nginx::default'
+include_recipe 'chef_nginx::default'
 
 if node['nodejs-deploy']['forward']['enable']
     template "/etc/nginx/sites-available/#{node['nodejs-deploy']['forward']['from']['host']}.forward.conf" do
       source 'server-forward.conf.erb'
-      mode '0755'
-      owner 'root'
-      group 'root'
+      mode '0755'      
       variables({
         server_port: node['nodejs-deploy']['forward']['from']['port'],
         server_hostname: node['nodejs-deploy']['forward']['from']['host'],

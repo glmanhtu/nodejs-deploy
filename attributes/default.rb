@@ -16,7 +16,10 @@ default['nodejs-deploy']['build']['max_memory'] = 2000
 default['nodejs-deploy']['git']['url'] = ''
 default['nodejs-deploy']['git']['project_location'] = ""
 default['nodejs-deploy']['git']['branch'] = 'master'
-default['nodejs-deploy']['git']['key'] = ''
+default['nodejs-deploy']['git']['private'] = false
+default['nodejs-deploy']['git']['databag']['name'] = 'databag'
+default['nodejs-deploy']['git']['databag']['key'] = 'private'
+default['nodejs-deploy']['git']['databag']['property'] = 'private_ssh_key'
 
 default['nodejs']['install_method'] = 'binary'
 

@@ -15,31 +15,67 @@ profile = node['nodejs-deploy']['profile']
 max_memory = node['nodejs-deploy']['build']['max_memory']
 source_dir = "#{node['nodejs-deploy']['dir']}/#{node['nodejs-deploy']['application']['name']}"
 client_dir = node['nodejs-deploy']['git']['project_location']
+repo = "#{source_dir}/repo"
 
 npm_package_dir = "/usr/local/nodejs-binary-#{node['nodejs']['version']}/bin";
 
-directory source_dir do
-  owner 'ubuntu'
-  group 'ubuntu'
+data_bag_name = node['nodejs-deploy']['git']['databag']['name']
+data_bag_key = node['nodejs-deploy']['git']['databag']['key']
+data_bag_property = node['nodejs-deploy']['git']['databag']['property']
+
+private_ssh_key = ""
+
+directory source_dir do  
   mode '0755'
   action :create
+  recursive true
 end
 
 package 'Install Python' do
     package_name 'python'
 end
 
-file "/tmp/git_wrapper.sh" do
-  owner "ubuntu"
-  mode "0755"
-  content "#!/bin/sh\nexec /usr/bin/ssh -o \"StrictHostKeyChecking=no\" -i /home/ubuntu/.ssh/id_rsa \"$@\""
-end
 
-git "#{source_dir}/repo" do
-  repository node['nodejs-deploy']['git']['url']
-  branch node['nodejs-deploy']['git']['branch']
-  action :sync
-  ssh_wrapper "/tmp/git_wrapper.sh"
+if node['nodejs-deploy']['git']['private']
+  encrypted_key = Chef::EncryptedDataBagItem.load(data_bag_name, data_bag_key)
+  private_ssh_key = encrypted_key[data_bag_property]
+
+  file "/tmp/git_private_key" do
+    mode "400"
+    sensitive true
+    content private_ssh_key
+  end
+
+  file "/tmp/git_wrapper.sh" do
+    mode "0755"
+    sensitive true
+    content "#!/bin/sh\nexec /usr/bin/ssh -o \"StrictHostKeyChecking=no\" -i /tmp/git_private_key \"$@\""
+  end
+
+  git repo do
+    repository node['nodejs-deploy']['git']['url']
+    branch node['nodejs-deploy']['git']['branch']
+    action :sync
+    ssh_wrapper "/tmp/git_wrapper.sh"
+  end
+
+
+  file "/tmp/git_private_key" do
+    action :delete
+  end
+else
+  
+  file "/tmp/git_wrapper.sh" do
+    mode "0755"
+    content "#!/bin/sh\nexec /usr/bin/ssh -o \"StrictHostKeyChecking=no\" \"$@\""
+  end
+
+  git repo do
+    repository node['nodejs-deploy']['git']['url']
+    branch node['nodejs-deploy']['git']['branch']
+    action :sync
+    ssh_wrapper "/tmp/git_wrapper.sh"
+  end
 end
 
 ["bower", "gulp"].each do |npm_package|

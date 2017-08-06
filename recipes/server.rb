@@ -7,11 +7,9 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe 'nginx::default'
+include_recipe 'chef_nginx::default'
 
-directory node['nodejs-deploy']['server']['root'] do
-  owner 'ubuntu'
-  group 'ubuntu'
+directory node['nodejs-deploy']['server']['root'] do  
   mode '0755'
   action :create
 end
@@ -22,9 +20,7 @@ end
 
 template "/etc/nginx/sites-available/#{node['nodejs-deploy']['server']['host_name']}.conf" do
   source 'server-site.conf.erb'
-  mode '0755'
-  owner 'root'
-  group 'root'
+  mode '0755'  
   variables({
     server_port: node['nodejs-deploy']['server']['port'],
     server_root: node['nodejs-deploy']['server']['root'],
