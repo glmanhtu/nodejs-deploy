@@ -7,11 +7,12 @@
 # All rights reserved - Do Not Redistribute
 #
 
-include_recipe 'chef_nginx::default'
+include_recipe 'chef_nginx::source'
 
 directory node['nodejs-deploy']['server']['root'] do  
   mode '0755'
   action :create
+  recursive true
 end
 
 package 'nginx' do
