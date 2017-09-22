@@ -15,10 +15,6 @@ directory node['nodejs-deploy']['server']['root'] do
   recursive true
 end
 
-package 'nginx' do
-  action :install
-end
-
 template "/etc/nginx/sites-available/#{node['nodejs-deploy']['server']['host_name']}.conf" do
   source 'server-site.conf.erb'
   mode '0755'  
