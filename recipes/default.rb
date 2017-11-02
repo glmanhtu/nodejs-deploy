@@ -96,7 +96,7 @@ bash 'Install bower package dependencies' do
 end
 
 bash 'Build project' do
-  code "cd #{source_dir}/repo/#{client_dir} && #{npm_package_dir}/gulp build --max_old_space_size=#{max_memory} --env=#{profile}"
+  code "cd #{source_dir}/repo/#{client_dir} && sudo #{npm_package_dir}/gulp build --max_old_space_size=#{max_memory} --env=#{profile}"
 end
 
 bash 'Delete old server' do
